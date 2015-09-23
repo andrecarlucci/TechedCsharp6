@@ -32,7 +32,7 @@
             <Button Height="120" Width="210">
                 <Image Source="Assets/hadouken.jpg"/>
                 <actions:Events.Mappings>
-                    <actions:Map Event="Click" ToMethod="DoHadouken" />
+                    <actions:Map Event="Click" ToMethod="DoTheHadouken" />
                 </actions:Events.Mappings>
             </Button>
         </Grid>

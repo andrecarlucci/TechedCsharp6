@@ -1,10 +1,6 @@
 ﻿using Hadouken.Model;
+using Hadouken.Util;
 using SharpSenses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hadouken.ViewModels {
     public class ViewModelLocator {
@@ -12,7 +8,7 @@ namespace Hadouken.ViewModels {
         public MainViewModel MainViewModel { get; set; }
 
         public ViewModelLocator() {
-            MainViewModel = new MainViewModel(Camera.Create(), new Ryu());
+            MainViewModel = new MainViewModel(Camera.Create(), new Ryu(), new Logger());
         }
     }
 }

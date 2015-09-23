@@ -1,4 +1,5 @@
 using Hadouken.Model;
+using Hadouken.Util;
 using SharpSenses;
 using SharpSenses.Gestures;
 using System;
@@ -10,14 +11,18 @@ namespace Hadouken.ViewModels {
     public class MainViewModel : INotifyPropertyChanged {
         private readonly ICamera _camera;
         private readonly Ryu _ryu;
+        private readonly Logger _logger;
         private bool _realSenseOn;
+        private int _progressValue;
         private string _progressText;
+        private int _hadoukenCount;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Title {
             get {
-                return "Hadouken!";
+                return String.Format("TechEd Hadouken! Hoje é {0:d}. Hadoukens: {1}",
+                                     DateTime.Today, HadoukenCount);
             }
         }
 
@@ -28,7 +33,7 @@ namespace Hadouken.ViewModels {
                     return;
                 }
                 _realSenseOn = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("RealSenseOn"));
+                OnPropertyChanged("RealSenseOn");
             }
         }
 
@@ -39,45 +44,88 @@ namespace Hadouken.ViewModels {
                     return;
                 }
                 _progressText = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("ProgressText"));
+                OnPropertyChanged("ProgressText");
+            }
+        }
+        public int ProgressValue {
+            get { return _progressValue; }
+            set {
+                if (_progressValue == value) {
+                    return;
+                }
+                _progressValue = value;
+                OnPropertyChanged("ProgressValue");
             }
         }
 
-        public MainViewModel(ICamera camera, Ryu ryu) {
-            _camera = camera;
-            _ryu = ryu;
+        public int HadoukenCount {
+            get { return _hadoukenCount; }
+            private set {
+                if (_hadoukenCount == value) {
+                    return;
+                }
+                _hadoukenCount = value;
+                OnPropertyChanged("Title");
+            }
         }
 
-        public void TurnRealSenseOn() {
-            RealSenseOn = true;
+        public MainViewModel(ICamera camera, Ryu ryu, Logger logger) {
+            _camera = camera;
+            _ryu = ryu;
+            _logger = logger;
+            ConfigureCamera();
+        }
+
+        public async Task TurnRealSenseOn() {
+            try {
+                await Task.Run(() => {
+                    _camera.Start();
+                });
+            }
+            catch (CameraException ex)  {
+                MessageBox.Show("Não consegui detectar a câmera");
+                _logger.Debug(ex.ToString());
+            }
+        }
+
+        private void ConfigureCamera() {
             _camera.LeftHand.Visible += (s, a) => {
                 ProgressText = "Ready!";
             };
+            _camera.LeftHand.NotVisible += (s, a) => {
+                ProgressText = "Show your hand";
+            };
             var movement = Movement.Forward(_camera.LeftHand, 8);
             movement.Progress += p => {
-
+                ProgressValue = (int) p;
             };
-            movement.Completed += () => {
-                DoHadoukenUI();
+            movement.Completed += async () => {
+                await DoTheHadouken();
             };
             movement.Activate();
-            _camera.Start();
         }
 
-        public async Task DoHadouken() {
-            await Task.Delay(3000);
+        public async Task DoTheHadouken(int delay) {
+            await Task.Delay(delay);
+            await DoTheHadouken();
+        }
+
+        public async Task DoTheHadouken() {
+            ProgressText = "Hadouken!";
             _ryu.DoHadouken();
+            await Task.Delay(2000);
+            ProgressText = "Show your hand";
+            HadoukenCount++;
         }
 
-        public void DoHadoukenUI() {
-            Application.Current.Dispatcher.BeginInvoke(new Action(async()=>await DoHadouken()));
-        }
-
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) {
+        protected virtual void OnPropertyChanged(string propertyName) {
             var handler = PropertyChanged;
-            if (handler != null) {
-                handler.Invoke(this, e);
+            if (handler == null) {
+                return;
             }
+            DispatcherHelper.RunInUI(() => {
+                handler.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            });
         }
     }
 }
