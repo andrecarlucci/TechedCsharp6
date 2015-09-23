@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,38 @@ namespace Hadouken.Services {
         }
 
         public void DoIt(string specialAttackName) {
-            _specialAttacks[specialAttackName].DoIt();
+            //_specialAttacks[specialAttackName].DoIt();
+        }
+    }
+
+    public class Ryu {
+        public string Name {
+            get {
+                return "Ryu";
+            }
+        }
+        
+        
+
+    }
+
+    public class Logger {
+        private readonly string _filename;
+
+        public Logger(string filename) {
+            _filename = filename;
+            if (String.IsNullOrEmpty(filename)) {
+                throw new ArgumentException("Filename is mandatory", "filename");
+            }
+        }
+
+        public void Debug(string message) {
+            try {
+                
+            }
+            catch(IOException ex) {
+                
+            }
         }
     }
 }

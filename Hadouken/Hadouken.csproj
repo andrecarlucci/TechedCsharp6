@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,8 +36,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libpxcclr.cs, Version=6.0.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libpxcclr.cs.6.0.21.0\lib\net40\libpxcclr.cs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MrWindows, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\mrwindows.0.4.0.0\lib\net451\MrWindows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpSenses, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sharpsenses.realsense.0.9.4.0\lib\net45\SharpSenses.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpSenses.RealSense, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sharpsenses.realsense.0.9.4.0\lib\net45\SharpSenses.RealSense.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,12 +66,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XamlActions, Version=2.6.5514.108, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlActions.2.6.5514.108\lib\net45\XamlActions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XamlActions.Wpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlActions.2.6.5514.108\lib\net45\XamlActions.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Model\Ryu.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\realsense.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
