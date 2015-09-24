@@ -1,5 +1,6 @@
 ﻿using Hadouken.Model;
 using Hadouken.RealSense;
+using Hadouken.Services;
 using Hadouken.Util;
 
 namespace Hadouken.ViewModels {
@@ -8,8 +9,7 @@ namespace Hadouken.ViewModels {
         public MainViewModel MainViewModel { get; set; }
 
         public ViewModelLocator() {
-            
-            MainViewModel = new MainViewModel(new RsCamera(), new Ryu(), new Logger());
+            MainViewModel = new MainViewModel(new RsCamera(), new Ryu(), new Logger(), new LightService());
         }
     }
 }

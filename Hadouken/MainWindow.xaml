@@ -6,7 +6,7 @@
         xmlns:actions="clr-namespace:XamlActions.Actions;assembly=XamlActions.Wpf"
         xmlns:local="clr-namespace:Hadouken"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="350" Width="525"
+        Title="{Binding Title}" Height="350" Width="530"
         DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainViewModel }"
         >
     <Grid>
@@ -23,10 +23,9 @@
             </Button>
             <Ellipse Fill="{Binding RealSenseOn, Converter={StaticResource ColorConverter}}" Margin="0,0,12,0" Width="50" Height="50" />
             <Grid Width="370" Height="50">
-                <ProgressBar Value="{Binding ProgressValue}" SmallChange="1" Maximum="30" Minimum="15"  />
+                <ProgressBar Value="{Binding ProgressValue}" SmallChange="1" Maximum="30" Minimum="15" Width="370" />
                 <TextBlock Text="{Binding ProgressText}" FontSize="36" Foreground="Black" Margin="12,0,0,0" />    
             </Grid>
-            
         </StackPanel>
         <Grid Grid.Row="1">
             <Button Height="120" Width="210">
@@ -36,6 +35,5 @@
                 </actions:Events.Mappings>
             </Button>
         </Grid>
-
     </Grid>
 </Window>

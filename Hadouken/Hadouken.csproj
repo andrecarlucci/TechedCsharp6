@@ -78,6 +78,7 @@
     <Compile Include="RealSense\Hand.cs" />
     <Compile Include="RealSense\HandArgs.cs" />
     <Compile Include="RealSense\RsCamera.cs" />
+    <Compile Include="Services\LightService.cs" />
     <Compile Include="Util\DispatcherHelper.cs" />
     <Compile Include="Util\Logger.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -128,9 +129,7 @@
   <ItemGroup>
     <Resource Include="Assets\hadouken.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\realsense.png" />
   </ItemGroup>
