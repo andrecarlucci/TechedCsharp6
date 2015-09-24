@@ -1,21 +1,22 @@
 using Hadouken.Model;
 using Hadouken.Util;
-using SharpSenses;
-using SharpSenses.Gestures;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using Hadouken.RealSense;
 
 namespace Hadouken.ViewModels {
     public class MainViewModel : INotifyPropertyChanged {
-        private readonly ICamera _camera;
+        private readonly RsCamera _camera;
         private readonly Ryu _ryu;
         private readonly Logger _logger;
         private bool _realSenseOn;
         private int _progressValue;
         private string _progressText;
         private int _hadoukenCount;
+        private bool _ready;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,7 +70,7 @@ namespace Hadouken.ViewModels {
             }
         }
 
-        public MainViewModel(ICamera camera, Ryu ryu, Logger logger) {
+        public MainViewModel(RsCamera camera, Ryu ryu, Logger logger) {
             _camera = camera;
             _ryu = ryu;
             _logger = logger;
@@ -79,43 +80,54 @@ namespace Hadouken.ViewModels {
         public async Task TurnRealSenseOn() {
             try {
                 await Task.Run(() => {
-                    _camera.Start();
+                    _camera.Init();
+                    RealSenseOn = true;
                 });
             }
-            catch (CameraException ex)  {
+            catch (Exception ex)  {
                 MessageBox.Show("Não consegui detectar a câmera");
                 _logger.Debug(ex.ToString());
             }
         }
 
+        private const int Max = 36;
+        private const int Min = 18;
+
         private void ConfigureCamera() {
-            _camera.LeftHand.Visible += (s, a) => {
-                ProgressText = "Ready!";
+            _camera.HandChanged += (sender, args) => {
+                var left = args.HandLeft;
+                if (_ready) {
+                    ProgressValue = ToProgressScale(left.Distance);
+                }
+                if (_ready && left.Distance < Min) {
+                    DoTheHadouken();
+                }
+                if (left.Visible && left.Open && left.Distance > Max) {
+                    SetReady();
+                }
             };
-            _camera.LeftHand.NotVisible += (s, a) => {
-                ProgressText = "Show your hand";
-            };
-            var movement = Movement.Forward(_camera.LeftHand, 8);
-            movement.Progress += p => {
-                ProgressValue = (int) p;
-            };
-            movement.Completed += async () => {
-                await DoTheHadouken();
-            };
-            movement.Activate();
+        }
+
+        private int ToProgressScale(int value) {
+            return Max - value + Min;
+        }
+
+        private void SetReady() {
+            _ready = true;
+            ProgressText = "Ready!";
         }
 
         public async Task DoTheHadouken(int delay) {
             await Task.Delay(delay);
-            await DoTheHadouken();
+            DoTheHadouken();
         }
 
-        public async Task DoTheHadouken() {
-            ProgressText = "Hadouken!";
+        public void DoTheHadouken() {
+            ProgressText = "Hadouken!!!";
             _ryu.DoHadouken();
-            await Task.Delay(2000);
-            ProgressText = "Show your hand";
             HadoukenCount++;
+            _ready = false;
+            ProgressValue = Min;
         }
 
         protected virtual void OnPropertyChanged(string propertyName) {

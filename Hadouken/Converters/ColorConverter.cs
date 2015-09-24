@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using SharpSenses;
 
 namespace Hadouken.Converters {
     public class ColorConverter : IValueConverter {

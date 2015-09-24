@@ -23,7 +23,7 @@
             </Button>
             <Ellipse Fill="{Binding RealSenseOn, Converter={StaticResource ColorConverter}}" Margin="0,0,12,0" Width="50" Height="50" />
             <Grid Width="370" Height="50">
-                <ProgressBar Value="{Binding Progress}" />
+                <ProgressBar Value="{Binding ProgressValue}" SmallChange="1" Maximum="30" Minimum="15"  />
                 <TextBlock Text="{Binding ProgressText}" FontSize="36" Foreground="Black" Margin="12,0,0,0" />    
             </Grid>
             

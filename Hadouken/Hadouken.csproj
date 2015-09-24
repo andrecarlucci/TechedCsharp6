@@ -16,7 +16,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -37,19 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="libpxcclr.cs, Version=6.0.21.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\libpxcclr.cs.6.0.21.0\lib\net40\libpxcclr.cs.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\libpxcclr.cs.dll</HintPath>
     </Reference>
     <Reference Include="MrWindows, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\mrwindows.0.4.0.0\lib\net451\MrWindows.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpSenses, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\sharpsenses.realsense.0.9.4.0\lib\net45\SharpSenses.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpSenses.RealSense, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\sharpsenses.realsense.0.9.4.0\lib\net45\SharpSenses.RealSense.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -82,6 +74,10 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Model\Ryu.cs" />
+    <Compile Include="RealSense\Side.cs" />
+    <Compile Include="RealSense\Hand.cs" />
+    <Compile Include="RealSense\HandArgs.cs" />
+    <Compile Include="RealSense\RsCamera.cs" />
     <Compile Include="Util\DispatcherHelper.cs" />
     <Compile Include="Util\Logger.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -117,7 +113,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -135,6 +133,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\realsense.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libpxccpp2c.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

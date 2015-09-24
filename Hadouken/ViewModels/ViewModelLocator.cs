@@ -1,6 +1,6 @@
 ﻿using Hadouken.Model;
+using Hadouken.RealSense;
 using Hadouken.Util;
-using SharpSenses;
 
 namespace Hadouken.ViewModels {
     public class ViewModelLocator {
@@ -8,7 +8,8 @@ namespace Hadouken.ViewModels {
         public MainViewModel MainViewModel { get; set; }
 
         public ViewModelLocator() {
-            MainViewModel = new MainViewModel(Camera.Create(), new Ryu(), new Logger());
+            
+            MainViewModel = new MainViewModel(new RsCamera(), new Ryu(), new Logger());
         }
     }
 }
