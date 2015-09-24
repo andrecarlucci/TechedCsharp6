@@ -56,7 +56,11 @@ namespace Hadouken.RealSense {
         }
 
         protected virtual void OnHandChanged(HandArgs e) {
-            HandChanged?.Invoke(this, e);
+            var handler = HandChanged;
+            if (handler == null) {
+                return;
+            }
+            handler.Invoke(this, e);
         }
     }
 }
